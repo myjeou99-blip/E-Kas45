@@ -12,12 +12,36 @@
 
 /*tambahan perbaikan*/
 body {
-    background-color: #ececec;
+    background-color: #f4f7f6; /* Warna lebih modern */
     margin: 0;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
+    padding: 0;
+    display: block; /* UBAH: Gunakan block, jangan flex di body */
+    width: 100%;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden; /* Mencegah geser kanan-kiri */
+}
+
+/* 2. Atur Pembungkus Aplikasi (Halaman HP-nya) */
+.main-app {
+    width: 100%;
+    max-width: 450px; 
+    margin: 0 auto;   
+    background-color: #ffffff;
     min-height: 100vh;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    position: relative;
+    padding-bottom: 80px; 
+    box-sizing: border-box; /* Agar padding tidak merusak lebar */
+}
+
+/* 3. Masukkan Kode Kartu Kas di Sini */
+.card-kas {
+    width: 100% !important; /* Memaksa kartu selebar layar HP */
+    margin-bottom: 15px;    /* Memberi jarak antar kartu (Lapint, Kirka, dsb) */
+    box-sizing: border-box; /* Menjaga agar kartu tidak meluber keluar */
+    display: flex;          /* Biasanya agar ikon dan teks sejajar */
+    padding: 15px;          /* Memberi ruang di dalam kartu */
+    border-radius: 12px;    /* Membuat sudut kartu melengkung/rapi */
 }
 
 /*.mobile-container {
@@ -272,4 +296,17 @@ input::-webkit-credentials-auto-fill-button {
     border-radius: 20px;
     padding: 20px;
     margin: 20px auto;
+}
+/* Khusus untuk tampilan HP (layar di bawah 600px) */
+@media screen and (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+    .card, .container {
+        width: 95% !important;
+        margin: 10px auto !important;
+    }
+    h1, h2 {
+        font-size: 1.2rem; /* Mengecilkan judul agar muat satu baris */
+    }
 }

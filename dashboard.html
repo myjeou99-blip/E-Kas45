@@ -508,29 +508,31 @@ doc.text("( ____________________ )", 145, finalY2 + 25, { align: "center" });
     }
 }
 
- if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => {
-                console.log('SW terdaftar!');
-                
-                // Cek update setiap kali aplikasi dibuka
-                reg.update();
-
-                reg.onupdatefound = () => {
-                    const installingWorker = reg.installing;
-                    installingWorker.onstatechange = () => {
-                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // Munculkan notifikasi atau langsung reload
-                            alert("Aplikasi diperbarui! Memuat ulang...");
+ // 1. Letakkan fungsi pengecek update di sini
+        function checkAppUpdate(registration) {
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        if (confirm("Versi terbaru Dompet45 tersedia! Muat ulang sekarang?")) {
                             window.location.reload();
                         }
-                    };
-                };
-            })
-            .catch(err => console.log('Gagal mendaftarkan SW', err));
-    });
-}
+                    }
+                });
+            });
+        }
+
+        // 2. Kemudian pendaftaran Service Worker di bawahnya
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => {
+                        console.log('SW Berhasil didaftarkan');
+                        checkAppUpdate(reg); // Memanggil fungsi di atas
+                    })
+                    .catch(err => console.log('SW Gagal:', err));
+            });
+        }
 </script>
 </body>
 </html>
