@@ -24,7 +24,7 @@ body {
 /* 2. Atur Pembungkus Aplikasi (Halaman HP-nya) */
 .main-app {
     width: 100%;
-    max-width: 450px; 
+    max-width: 100%; 
     margin: 0 auto;   
     background-color: #ffffff;
     min-height: 100vh;
@@ -41,7 +41,7 @@ body {
     box-sizing: border-box; /* Menjaga agar kartu tidak meluber keluar */
     display: flex;          /* Biasanya agar ikon dan teks sejajar */
     padding: 15px;          /* Memberi ruang di dalam kartu */
-    border-radius: 12px;    /* Membuat sudut kartu melengkung/rapi */
+    border-radius: 15px;    /* Membuat sudut kartu melengkung/rapi */
 }
 
 /*.mobile-container {
