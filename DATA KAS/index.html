@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Dompet45</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+
+        .footer-banner-modern {
+            width: 100%;
+            height: 70px; 
+            background: linear-gradient(135deg, #051937, #004d7a, #008793); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-title {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            /*margin-bottom: 4px;*/
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Agar teks lebih 'timbul' */
+        }
+
+        .footer-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 3px;
+            letter-spacing: 0.px;
+            text-transform: capitalize;
+        }
+
+        /* Update login-content agar tidak tertutup banner */
+        .login-content {
+            padding-bottom: 90px !important; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #cbdcf7 0%, #eef4ff 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+        
+        .mobile-container { 
+            width: 90%; 
+            max-width: 400px; 
+            min-height: 80vh; 
+            border-radius: 35px; 
+            background: #ffffff; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header-banner-top {
+            width: 100%; 
+            height: 200px; 
+            overflow: hidden;
+        }
+        
+        .header-banner-top img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        .login-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Menyeimbangkan semua konten ke tengah */
+        }
+
+        .logo-area { margin-bottom: 20px; text-align: center; }
+
+        form { width: 100%; }
+
+        .input-group { 
+            display: flex; 
+            align-items: center; 
+            border: 2px solid #f0f0f0; 
+            border-radius: 15px; 
+            padding: 10px 15px; 
+            margin-bottom: 15px; 
+            background: #fdfdfd; 
+            width: 100%; 
+            max-width: 280px; /* Batas lebar input agar tidak terlalu panjang */
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .input-group input { 
+            border: none; 
+            outline: none; 
+            flex-grow: 1; 
+            font-size: 14px; 
+            background: transparent; 
+        }
+
+        .btn-login { 
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 18px; 
+            font-weight: bold; 
+            display: block; 
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto; 
+            cursor: pointer; 
+            width: 50%;
+            /*max-width: 280px;*/
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+    <div class="header-banner-top">
+        <img src="banner.jpg" alt="Banner Dompet45">
+    </div>
+
+    <div class="login-content">
+        <div class="logo-area">
+            <img src="image1.png" alt="Logo" style="width: 100px; height: auto;">
+        </div>
+
+        <form id="loginForm" autocomplete="off">
+            <div class="input-group">
+                <i class="fas fa-user" style="margin-right: 10px; color: #aaa;"></i>
+                <input type="text" id="u_identiti" placeholder="Username" required autocomplete="off">
+            </div>
+
+            <div class="input-group" style="position: relative; display: flex; align-items: center;">
+    <i class="fas fa-lock" style="margin-right: 10px; color: #aaa;"></i>
+    <input type="password" 
+           id="p_kredensial" 
+           placeholder="Password" 
+           required 
+           autocomplete="current-password" 
+           spellcheck="false"
+           style="flex: 1; padding-right: 45px; border: none; outline: none; background: transparent;">
+    
+    <i class="fa-solid fa-eye" 
+       id="togglePassword" 
+       style="position: absolute; right: 10px; cursor: pointer; color: #777; z-index: 10; padding: 5px;">
+    </i>
+</div>
+
+            <div id="errorMessage" style="display: none; color: #ff3b30; font-size: 13px; text-align: center; margin-bottom: 12px; font-weight: 500;">
+                ⚠️ Username atau Password salah!
+            </div>
+
+            <button type="submit" class="btn-login" id="btnLogin">Masuk Sekarang</button>
+        </form>
+    </div>
+
+    <div class="footer-banner-modern">
+        <div class="footer-title">MANAJEMEN KEUANGAN MOBILE</div>
+        <div class="footer-subtitle">Copyright © 2026 by Jeou</div>
+    </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
