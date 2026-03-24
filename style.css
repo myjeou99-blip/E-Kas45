@@ -1,0 +1,275 @@
+:root {
+    --main-green: #28a745;
+    --main-red: #dc3545;
+    --dark-gray: #333;
+    --light-gray: #f4f7f6;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+/*body { background-color: #ececec; display: flex; justify-content: center; }*/
+
+/*tambahan perbaikan*/
+body {
+    background-color: #ececec;
+    margin: 0;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh;
+}
+
+/*.mobile-container {
+    width: 100%; max-width: 480px; height: 100vh;
+    background: var(--light-gray); position: relative;
+    overflow: hidden; display: flex; flex-direction: column;
+}*/
+
+/*ini perbaikan*/
+.mobile-container {
+    width: 90% !important;
+    max-width: 400px !important;
+    /* Mengunci tinggi agar tidak melar ke atas/bawah */
+    height: 85vh !important; 
+    max-height: 760px !important;
+    
+    /* Menempatkan di tengah layar */
+    margin: auto !important;
+    position: relative !important;
+    
+    /* Membuat sudut melengkung seperti di Login */
+    border-radius: 35px !important; 
+    overflow: hidden !important;
+    
+    /* Memberikan bayangan agar terlihat melayang */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+    background-color: #f4f7f6 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+
+
+.header-banner-top { width: 100%; height: 165px; overflow: hidden; }
+.header-banner-top img { width: 100%; height: 100%; object-fit: cover; }
+
+/* KARTU SALDO: Presisi di bawah banner */
+.balance-card-mini {
+    background: var(--white);
+    margin: -25px 20px 10px 20px; 
+    padding: 12px 15px !important;
+    border-radius: 20px; text-align: center;
+    z-index: 10; position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: opacity 0.2s;
+}
+
+.scroll-area {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    /* Gunakan padding secukupnya agar item terakhir tidak tertutup navbar */
+    padding: 10px 20px 90px 20px !important; 
+    width: 100% !important;
+    box-sizing: border-box !important;
+    /* Menghilangkan sisa ruang kosong di bawah skrol */
+    margin-bottom: 0 !important;
+}
+
+/* KAS GRID: Memperbaiki error vertikal */
+.kas-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+.kas-card {
+    background: var(--white);
+    padding: 15px; border-radius: 15px;
+    display: flex; align-items: center; gap: 15px; /* Sejajar Horizontal */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.kas-icon {
+    width: 45px; height: 45px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.2em; flex-shrink: 0;
+}
+
+.kas-info { display: flex; flex-direction: column; }
+.kas-title { font-size: 0.8em; color: #888; font-weight: 600; }
+.kas-val { font-size: 1.1em; font-weight: 800; color: var(--dark-gray); }
+
+/* MODAL SYSTEM: Responsif & Cepat */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6); display: none;
+    justify-content: center; align-items: center; z-index: 1000;
+}
+
+.modal-content {
+    background: white; width: 90%; max-width: 400px;
+    border-radius: 20px; padding: 25px; position: relative;
+    max-height: 85vh; overflow-y: auto;
+}
+
+.close-btn {
+    position: absolute; top: 10px; right: 15px;
+    font-size: 2em; cursor: pointer; color: #aaa;
+    padding: 10px; z-index: 10;
+}
+
+/* RIWAYAT ITEM */
+.riwayat-item {
+    background: #f9f9f9; border-radius: 10px; padding: 12px;
+    margin-bottom: 8px; border-left: 5px solid #ccc;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.riwayat-item.masuk { border-left-color: var(--main-green); }
+.riwayat-item.keluar { border-left-color: var(--main-red); }
+
+/* Warna Ikon */
+.bg-green { background: #28a745; } .bg-yellow { background: #ffc107; }
+.bg-blue { background: #007bff; } .bg-red { background: #dc3545; }
+.bg-purple { background: #6f42c1; } .bg-dark { background: #343a40; }
+.bg-orange { background: #fd7e14; }
+
+/* NAVBAR & FAB */
+.bottom-navbar {
+   position: absolute !important;
+    bottom: 0 !important;
+    /*left: 0 !important;*/
+    right: 0 !important;
+    width: 100% !important;
+    height: 70px !important;
+    background: white !important;
+    /* Menghilangkan sudut melengkung di sisi samping agar lurus */
+    border-radius: 0 0 40px 40px !important; 
+    z-index: 999;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.btn-add-main {
+    position: absolute !important;
+    bottom: 35px !important; /* Sesuaikan ketinggian agar pas di tengah bar navigasi */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000;
+}
+
+
+
+.fab-main {
+    position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 60px; background: var(--main-green);
+    color: white; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 2em;
+    box-shadow: 0 5px 15px rgba(40,167,69,0.4); z-index: 20;
+}
+/* LANJUTAN SKRIP UNTUK MEMPERBAIKI FORM TRANSAKSI */
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    outline: none;
+    background-color: #fcfcfc;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+.btn-simpan {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--main-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1em;
+}
+/* Mengatur susunan ikon dan teks agar bertumpuk (atas-bawah) */
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8e8e93; /* Warna abu-abu saat tidak aktif */
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* Mengatur gaya teks label di bawah ikon */
+.nav-btn span {
+    font-size: 10px; /* Ukuran teks kecil khas aplikasi mobile */
+    font-weight: 600;
+    margin-top: 4px; /* Jarak antara ikon dan teks */
+    text-transform: uppercase; /* Membuat teks jadi kapital kecil */
+}
+
+/* Warna saat menu aktif atau diklik */
+.nav-btn.active {
+    color: #4c84ff !important; /* Ganti kode hex ini untuk warna menu aktif */
+}
+
+/* Memberikan identitas warna pada masing-masing ikon (Opsional) */
+.nav-btn:nth-child(2) i { color: #28a745; } /* Transaksi - Hijau */
+.nav-btn:nth-child(4) i { color: #f39c12; } /* Laporan - Oranye */
+.nav-btn:nth-child(5) i { color: #e74c3c; } /* Keluar - Merah */
+
+/* Pastikan jika menu aktif, semua elemennya berubah jadi biru */
+.nav-btn.active i, .nav-btn.active span {
+    color: #4c84ff !important;
+}
+/* --- KODE TAMBAHAN UNTUK MENGHAPUS IKON MATA BAWAAN BROWSER --- */
+
+/* Menghapus ikon mata bawaan Microsoft Edge */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+/* Menghapus ikon mata/kunci bawaan Chrome/Safari */
+input::-webkit-contacts-auto-fill-button, 
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+}
+/* Menghilangkan tampilan scrollbar tapi tetap bisa di-scroll */
+.scroll-area::-webkit-scrollbar {
+    display: none; /* Untuk Chrome, Safari, dan Edge */
+}
+
+.scroll-area {
+    -ms-overflow-style: none;  /* Untuk Internet Explorer dan Edge lama */
+    scrollbar-width: none;  /* Untuk Firefox */
+}
+
+.modal-content-riwayat {
+    max-height: 60vh !important; /* Membatasi tinggi agar tidak menutupi navbar */
+    overflow-y: auto !important; /* Menambahkan scroll di dalam kotak putih */
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+}

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dompet45 - Dashboard Keuangan</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    </head> <style>
+body {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+}
+
+        /* CSS UNTUK NAVIGASI BAWAH - DIPERBAIKI */
+        .bottom-navbar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            height: 70px;
+            background: #ffffff !important;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            z-index: 9999 !important;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            width: calc(100% - 30px);
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #8e8e93;
+            font-size: 0.8em;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-btn i { font-size: 1.2em; margin-bottom: 4px; }
+        .nav-btn span { font-size: 10px; font-weight: 600; }
+        .nav-btn.active { color: #28a745; }
+
+        /* TOMBOL TAMBAH (+) UTAMA - BERSIH TOTAL */
+        .btn-add-main {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #28a745 !important;
+            border: 5px solid #ffffff !important; /* Menutup bayangan di belakang */
+            border-radius: 50% !important;
+            color: white !important;
+            display: flex !important;
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            cursor: pointer;
+            z-index: 10000 !important; /* Di atas navbar */
+            outline: none;
+        }
+
+        .btn-add-main i { font-size: 24px; }
+        
+        /* Hilangkan FAB lama jika masih muncul */
+        .fab-main { display: none !important; }
+
+      .admin-only { 
+    display: none !important; 
+}
+body.is-admin .admin-only { 
+    display: flex !important; 
+}  
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="header-banner-top">
+            <img src="banner.jpg" alt="Banner">
+            <div id="welcomeUser" style="position: absolute; top: 10px; right: 15px; color: white; font-size: 0.8em; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);"></div>
+        </div>
+        
+        <div class="balance-card-mini" id="mainCard" onclick="fetchLatestData()" 
+     style="cursor: pointer; padding: 15px; 
+            background: linear-gradient(135deg, #0f3057 0%, #00587a 100%); 
+            color: white; 
+            margin-top: 10px !important; 
+            border-radius: 15px;">
+    
+    <div style="font-weight: 800; color: #ffffff; font-size: 1.1em;">
+        TOTAL KAS : <span id="displayTotalSaldo">Rp 54.500.000</span>
+    </div>
+    
+    <div id="lastUpdate" style="font-size: 0.7em; color: #d4edda; font-weight: bold; margin-top: 5px;">
+        Update: 24 Maret 2026 23:03:08
+    </div>
+</div>
+
+        <div class="scroll-area">
+            <div class="kas-grid" id="kasContainer"></div>
+        </div>
+
+        <div id="modalTrans" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModalTrans()">&times;</span>
+                <h3 style="margin-bottom: 15px;">Catat Transaksi</h3>
+                <form id="formTransaksi">
+                    <div class="input-group">
+                        <label>Tanggal</label>
+                        <input type="date" id="tglTrans" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Pilih Akun Kas</label>
+                        <select id="pilihKas" required></select>
+                    </div>
+                    <div class="input-group">
+                        <label>Nominal (Rp)</label>
+                        <input type="number" id="nominal" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Keterangan</label>
+                        <input type="text" id="ket" required>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <input type="radio" name="tipe" id="rMasuk" value="Masuk" checked> Masuk
+                        <input type="radio" name="tipe" id="rKeluar" value="Keluar"> Keluar
+                    </div>
+                    <button type="submit" id="btnSimpan" class="btn-simpan admin-only" style="margin-top:20px;">SIMPAN DATA</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalGrafik" class="modal-overlay"><div class="modal-content"><span class="close-btn" onclick="closeModalGrafik()">&times;</span><h3 id="judulGrafik">Detail</h3><div style="max-width: 200px; margin: 20px auto;"><canvas id="chartKas"></canvas></div><div id="infoDetailGrafik"></div></div></div>
+        <div id="modalRiwayat" class="modal-overlay">
+    <div class="modal-content" style="height: 60vh; display: flex; flex-direction: column; margin-bottom: 80px;">
+        <span class="close-btn" onclick="closeModalRiwayat()">&times;</span>
+        <h3>Riwayat Transaksi</h3>
+        
+        <div id="daftarRiwayat" style="flex: 1; overflow-y: auto; margin-top: 15px; padding-right: 5px;">
+        </div>
+
+        <button onclick="unduhPDF()" style="background: #28a745; color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px;">
+            CETAK PDF
+        </button>
+    </div>
+</div>
+
+        <button class="btn-add-main admin-only" onclick="openModalTrans()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <div class="bottom-navbar">
+            <div class="nav-btn" onclick="loadDashboard()"style="margin-left: 30px;">
+        <i class="fas fa-home"></i>
+        <span>BERANDA</span>
+    </div>
+
+    <div class="nav-btn" onclick="openModalRiwayat()">
+        <i class="fas fa-history"></i>
+        <span>RIWAYAT</span>
+    </div>
+
+    <div style="width: 70px;"></div> 
+
+    <div class="nav-btn" onclick="unduhPDF()">
+        <i class="fas fa-file-invoice"></i>
+        <span>LAPORAN</span>
+    </div>
+
+    <div class="nav-btn" onclick="logout()"style="margin-right: 30px;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>KELUAR</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlWebID = "https://script.google.com/macros/s/AKfycbzGQGqDN3dpEiee2XAI2yCXK1tMDv0VjSaT6CicKBxvZhI6kG8UoNEcwYLwLxOVJSOAOA/exec";
+        let rawRecords = [];
+        let myChart = null;
+
+        const dataKas = [
+            { nama: "Kas ATK", saldo: 0, icon: "fa-pencil-alt", color: "bg-green" },
+            { nama: "Kas Lapint", saldo: 0, icon: "fa-file-alt", color: "bg-yellow" },
+            { nama: "Kas Kirka", saldo: 0, icon: "fa-chart-line", color: "bg-blue" },
+            { nama: "Kas Progja", saldo: 0, icon: "fa-calendar-alt", color: "bg-red" },
+            { nama: "Kas Harwat", saldo: 0, icon: "fa-tools", color: "bg-purple" },
+            { nama: "Kas Khusus", saldo: 0, icon: "fa-key", color: "bg-dark" },
+            { nama: "Kas Rakor", saldo: 0, icon: "fa-users", color: "bg-orange" },
+            { nama: "Kas Giat Ops", saldo: 0, icon: "fa-briefcase", color: "bg-blue" } 
+        ];
+
+        function formatRupiah(n) { return "Rp " + new Intl.NumberFormat("id-ID").format(n || 0); }
+
+        function updateDropdownAkun() {
+            const selectAkun = document.getElementById("pilihKas"); 
+            if (!selectAkun) return;
+            selectAkun.innerHTML = '<option value="" disabled selected>-- Pilih Akun --</option>';
+            dataKas.forEach(kas => {
+                const option = document.createElement("option");
+                option.value = kas.nama;
+                option.textContent = kas.nama;
+                selectAkun.appendChild(option);
+            });
+        }
+
+        async function fetchLatestData() {
+            const status = document.getElementById("lastUpdate");
+            document.getElementById("mainCard").style.opacity = "0.5";
+            status.innerText = "⏳ Memuat...";
+            try {
+                const res = await fetch(urlWebID + "?t=" + Date.now());
+                rawRecords = await res.json();
+                dataKas.forEach(k => k.saldo = 0);
+                rawRecords.forEach(r => {
+                    const i = dataKas.findIndex(k => k.nama.trim().toLowerCase() === r.akun.trim().toLowerCase());
+                    if(i !== -1) {
+                        let n = parseInt(r.nominal) || 0;
+                        r.tipe.trim() === "Masuk" ? dataKas[i].saldo += n : dataKas[i].saldo -= n;
+                    }
+                });
+                renderDashboard();
+                updateDropdownAkun();
+                const opsiTgl = { day: 'numeric', month: 'long', year: 'numeric' };
+const tgl = new Date().toLocaleDateString('id-ID', opsiTgl);
+const jam = new Date().toLocaleTimeString('id-ID').replace(/\./g, ':');
+
+status.innerText = `Update: ${tgl} ${jam}`;
+            } catch (e) { status.innerText = "❌ Gagal Sinkron"; }
+            document.getElementById("mainCard").style.opacity = "1";
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById("kasContainer");
+            let total = 0; container.innerHTML = "";
+            dataKas.forEach(item => {
+                total += item.saldo;
+                container.innerHTML += `
+    <div class="kas-card" onclick="tampilkanAnalisis('${item.nama}')" style="display: flex; align-items: center; background: white; padding: 12px 15px; margin-bottom: 8px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); cursor: pointer;">
+        
+        <div class="kas-icon ${item.color}" style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1px; flex-shrink: 0;">
+            <i class="fas ${item.icon}" style="font-size: 1.1em;"></i>
+        </div>
+
+        <div style="font-weight: 800; color: #333; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${item.nama} : ${formatRupiah(item.saldo)}
+        </div>
+
+    </div>
+`;
+            });
+            document.getElementById("displayTotalSaldo").innerText = formatRupiah(total);
+        }
+// FUNGSI UNTUK MENAMPILKAN ANALISIS GRAFIK
+function tampilkanAnalisis(namaKas) {
+    // 1. Munculkan modal grafik
+    const modal = document.getElementById("modalGrafik");
+    if (modal) modal.style.display = "flex";
+    
+    document.getElementById("judulGrafik").innerText = "Analisis: " + namaKas;
+
+    // 2. Filter data untuk kas yang dipilih
+    const dataFilter = rawRecords.filter(r => r.akun.trim().toLowerCase() === namaKas.trim().toLowerCase());
+    
+    let masuk = 0;
+    let keluar = 0;
+
+    dataFilter.forEach(r => {
+        let n = parseInt(r.nominal) || 0;
+        if (r.tipe.trim() === "Masuk") masuk += n;
+        else keluar += n;
+    });
+
+    // 3. Reset grafik lama agar tidak error
+    if (window.myChart instanceof Chart) {
+        window.myChart.destroy();
+    }
+
+    // 4. Gambar grafik baru
+    const ctx = document.getElementById('chartKas').getContext('2d');
+    window.myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Masuk', 'Keluar'],
+            datasets: [{
+                data: [masuk, keluar],
+                backgroundColor: ['#28a745', '#dc3545'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    // 5. Tampilkan rincian teks di bawah grafik
+    document.getElementById("infoDetailGrafik").innerHTML = `
+        <div style="margin-top:20px; text-align:left; border-top:1px solid #eee; pt:10px;">
+            <p style="color:#28a745">🟢 Total Masuk: <b>${formatRupiah(masuk)}</b></p>
+            <p style="color:#dc3545">🔴 Total Keluar: <b>${formatRupiah(keluar)}</b></p>
+            <p style="font-weight:bold; margin-top:5px;">💰 Saldo: ${formatRupiah(masuk - keluar)}</p>
+        </div>
+    `;
+}
+
+// Tambahkan juga fungsi tutupnya
+function closeModalGrafik() {
+    document.getElementById("modalGrafik").style.display = "none";
+}
+        // FUNGSI MODAL
+        function openModalTrans() { document.getElementById("modalTrans").style.display = "flex"; document.getElementById("tglTrans").valueAsDate = new Date(); }
+        function closeModalTrans() { document.getElementById("modalTrans").style.display = "none"; }
+        function openModalRiwayat() { document.getElementById("modalRiwayat").style.display = "flex"; renderRiwayat(); }
+        function closeModalRiwayat() { document.getElementById("modalRiwayat").style.display = "none"; }
+
+        function renderRiwayat() {
+            const cont = document.getElementById("daftarRiwayat"); 
+            cont.innerHTML = rawRecords.length ? "" : "<p>Data Kosong</p>";
+            [...rawRecords].reverse().forEach(r => {
+                cont.innerHTML += `<div class="riwayat-item ${r.tipe.toLowerCase()}"><b>${r.akun}</b> - ${formatRupiah(r.nominal)}<br><small>${r.tanggal} | ${r.keterangan}</small></div>`;
+            });
+        }
+
+        // Cetak PDF (Fungsi Anda yang sudah ada)
+        async function unduhPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const tglSekarang = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(/\./g, ':');
+
+    // 1. HEADER
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text("LAPORAN KEUANGAN", 105, 15, { align: "center" });
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Update: ${tglSekarang} ${waktuSekarang}`, 105, 22, { align: "center" });
+
+    // 2. TABEL TRANSAKSI UTAMA
+    doc.autoTable({
+        startY: 30,
+        head: [['Tanggal', 'Tipe', 'Akun', 'Nominal', 'Keterangan']],
+        body: rawRecords.map(r => [
+            (() => {
+                let t = r.tanggal.toString().replace(/\//g, '-');
+                const parts = t.split('-');
+                let dObj = (parts[0].length === 2) ? new Date(`${parts[2]}-${parts[1]}-${parts[0]}`) : new Date(t);
+                return isNaN(dObj) ? r.tanggal : dObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            })(),
+            r.tipe, r.akun, formatRupiah(r.nominal), r.keterangan || "-"
+        ]),
+        theme: 'grid',
+        headStyles: { fillColor: [40, 167, 69], halign: 'center' },
+        styles: { fontSize: 8, cellPadding: 2 },
+        columnStyles: { 
+            0: { cellWidth: 25 }, 
+            1: { cellWidth: 20, halign: 'center' }, 
+            2: { cellWidth: 25 }, 
+            3: { cellWidth: 30, halign: 'right' }, 
+            4: { cellWidth: 'auto' } 
+        }
+    });
+
+    // 3. TABEL RINGKASAN SALDO
+    let finalY = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text("RINGKASAN SALDO PER AKUN", 105, finalY, { align: "center" });
+
+    const ringkasan = {};
+    rawRecords.forEach(r => {
+        if (!ringkasan[r.akun]) ringkasan[r.akun] = { masuk: 0, keluar: 0 };
+        const nom = parseInt(r.nominal) || 0;
+        if (r.tipe === "Masuk") ringkasan[r.akun].masuk += nom;
+        else ringkasan[r.akun].keluar += nom;
+    });
+
+    const bodyRingkasan = Object.keys(ringkasan).map(nama => {
+        const d = ringkasan[nama];
+        return [nama, formatRupiah(d.masuk), formatRupiah(d.keluar), formatRupiah(d.masuk - d.keluar)];
+    });
+
+    const totalSemua = Object.values(ringkasan).reduce((a, b) => a + (b.masuk - b.keluar), 0);
+
+    doc.autoTable({
+        startY: finalY + 5,
+        margin: { left: 45, right: 45 },
+        head: [['Nama Akun', 'Total Masuk', 'Total Keluar', 'Saldo Akhir']],
+        body: bodyRingkasan,
+        foot: [[{ 
+            content: `TOTAL KAS KESELURUHAN: ${formatRupiah(totalSemua)}`, 
+            colSpan: 4, 
+            styles: { halign: 'center', fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' } 
+        }]],
+        theme: 'striped',
+        headStyles: { fillColor: [52, 58, 64], halign: 'center' },
+        styles: { fontSize: 8 },
+        columnStyles: { 1: { halign: 'right' }, 2: { halign: 'right' }, 3: { halign: 'right' } }
+    });
+
+    // 4. TANDA TANGAN
+    let finalY2 = doc.lastAutoTable.finalY + 15;
+    const xPosTTD = 165; 
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Jakarta, ${tglSekarang}`, 145, finalY2 -3, { align: "center" }); 
+doc.text("Bendahara,", 145, finalY2 + 2, { align: "center" });
+doc.text("( ____________________ )", 145, finalY2 + 25, { align: "center" });
+
+    doc.save(`Laporan Kas : ${tglSekarang}.pdf`);
+}
+
+
+        document.getElementById("formTransaksi").onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btnSimpan");
+            btn.innerText = "⏳ Menyimpan...";
+            const payload = {
+                tanggal: document.getElementById("tglTrans").value,
+                akun: document.getElementById("pilihKas").value,
+                nominal: document.getElementById("nominal").value,
+                keterangan: document.getElementById("ket").value,
+                tipe: document.querySelector('input[name="tipe"]:checked').value
+            };
+            await fetch(urlWebID, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+            alert("Data tersimpan!");
+            closeModalTrans();
+            fetchLatestData();
+            btn.innerText = "SIMPAN DATA";
+        };
+
+        function logout() { sessionStorage.clear(); window.location.href = "index.html"; }
+
+        // PROTEKSI ROLE
+        
+     const secureUser = sessionStorage.getItem("current_user");
+    if (!secureUser) {
+        window.location.href = "index.html";
+    }
+        document.addEventListener("DOMContentLoaded", function() {
+    const role = sessionStorage.getItem("current_role");
+    const user = sessionStorage.getItem("current_user");
+    const welcomeArea = document.getElementById("welcomeUser");
+
+    // Tampilkan nama user di pojok kanan atas
+    if (user && welcomeArea) {
+        welcomeArea.innerText = "Halo, " + user;
+    }
+
+    // CEK ROLE: Jika admin, tambahkan class 'is-admin' ke body agar tombol muncul
+    if (role === "admin") {
+        document.body.classList.add("is-admin");
+    } else {
+        console.log("Mode: Hanya Lihat (Tamu)");
+    }
+});
+
+        window.onload = fetchLatestData;
+    </script>
+    <script>
+// --- MASUKKAN DI SINI ---
+    function loadDashboard() {
+        /// 1. Sembunyikan SEMUA elemen yang menutupi layar (Modal, Riwayat, dll)
+    // Kita cari elemen berdasarkan ID atau Class yang umum digunakan
+    const overlays = [
+        document.getElementById('modalRiwayat'), // Ganti dengan ID elemen Riwayat Anda
+        document.querySelector('.modal'),
+        document.querySelector('.riwayat-container') // Tambahkan class container riwayat Anda
+    ];
+
+    overlays.forEach(el => {
+        if (el) el.style.display = 'none';
+    });
+
+    // 2. Jika Anda menggunakan tombol silang (X) yang memicu fungsi tertentu
+    // Anda bisa memanggil fungsi tutup tersebut di sini (misal: closeRiwayat())
+    if (typeof closeRiwayat === "function") {
+        closeRiwayat();
+    }
+
+    // 3. Scroll kembali ke posisi paling atas
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 4. Pastikan data dashboard tetap segar tanpa reload total
+    if (typeof fetchLatestData === "function") {
+        fetchLatestData();
+    }
+}
+
+ if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => {
+                console.log('SW terdaftar!');
+                
+                // Cek update setiap kali aplikasi dibuka
+                reg.update();
+
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // Munculkan notifikasi atau langsung reload
+                            alert("Aplikasi diperbarui! Memuat ulang...");
+                            window.location.reload();
+                        }
+                    };
+                };
+            })
+            .catch(err => console.log('Gagal mendaftarkan SW', err));
+    });
+}
+</script>
+</body>
+</html>
