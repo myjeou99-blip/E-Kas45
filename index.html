@@ -4,8 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login - Dompet45</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=999">
     <style>
+/* 1. RESET TOTAL AGAR SEMUA JADI KOTAK */
+    * {
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        box-sizing: border-box;
+    }
+
+    /* 2. PENGATURAN TAMPILAN HP (Agar Full Screen & Kotak) */
+    .main-app {
+        width: 100%;
+        max-width: 500px; /* Batas lebar di PC */
+        margin: 0 auto;
+        background-color: #ffffff;
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        /* Memastikan tidak ada lengkungan di pinggir layar HP */
+        border: none !important;
+        box-shadow: none !important; 
+    }
+
+    /* 3. BANNER ATAS (KOTAK TAJAM) */
+    .header-banner-top {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+    }
+    .header-banner-top img {
+        width: 100%;
+        display: block;
+    }
+
+    /* 4. FOOTER BAWAH (KOTAK TAJAM & MENYESUAIKAN HP) */
+    .footer-banner-modern {
+        width: 100%;
+        padding: 15px 0;
+        background: linear-gradient(135deg, #051937, #004d7a, #008793);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* Posisi nempel di bawah */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    /* 5. TOMBOL & INPUT */
+    .btn-masuk, .input-group input {
+        width: 90%;
+        margin: 10px auto;
+        border-radius: 0 !important;
+    }
 
         .footer-banner-modern {
             width: 100%;
