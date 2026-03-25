@@ -67,12 +67,12 @@ body {
 /* Banner Gedung di Atas */
 .header-banner-top { 
     width: 100%; 
-    height: 165px; 
+    height: 165px;
     overflow: hidden; 
 }
 .header-banner-top img { 
     width: 100%; 
-    height: 100%; 
+    height: 100%;
     object-fit: cover;
     border-radius: 0 !important; 
 }
@@ -92,18 +92,17 @@ body {
 
 .header-banner-top { 
     width: 100%; 
-    height: 165px; /* Sesuaikan dengan tinggi yang Anda inginkan */
-    overflow: hidden; 
+    height: 165px; /* Sesuaikan dengan tinggi yang Anda inginkan*/
+    overflow: hidden;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); 
 }
 
 /* Hilangkan kelengkungan pada gambar di dalamnya */
 .header-banner-top img { 
     width: 100%; 
     height: 100%; 
-    object-fit: cover; 
-    
-    /* TAMBAHKAN BARIS INI ATAU PASTIKAN JADI 0 */
-    border-radius: 0 !important; 
+    object-fit: cover;
+    border-radius: 0 !important; /* Tambahan agar tidak ada sisa lengkungan */ 
 }
 
 /* KARTU SALDO: Presisi di bawah banner */
@@ -339,38 +338,31 @@ input::-webkit-credentials-auto-fill-button {
     }
 }
 
-/* --- PENGATURAN KOTAK TOTAL (HP & PC) --- */
+/* --- PAKSA KOTAK SEMPURNA --- */
 
-/* 1. Hilangkan kelengkungan di wadah utama */
-.main-app, .container, body, #app {
+/* 1. Hapus lengkungan di container utama */
+.main-app, .container, .login-page, body {
     border-radius: 0 !important;
-    -webkit-border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
+    overflow: hidden !important;
 }
 
-/* 2. Hilangkan kelengkungan di Banner Atas & Gambarnya */
+/* 2. Paksa Banner Atas */
 .header-banner-top, 
-.header-banner-top img, 
-.banner-img {
+.header-banner-top img {
     border-radius: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
+    clip-path: none !important; /* Matikan polygon jika tidak perlu segitiga */
 }
 
-/* 3. Hilangkan kelengkungan di Footer Bawah */
+/* 3. Paksa Footer Bawah */
 .footer-banner-modern, 
-.footer-container, 
-footer {
+.footer-container {
     border-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    clip-path: none !important;
 }
 
-/* 4. Hilangkan kelengkungan di Kolom Input & Tombol (Agar Seragam) */
-input, 
-.input-group, 
-.btn-login, 
-.btn-masuk, 
-button {
+/* 4. Paksa Tombol & Input */
+.btn-login, .btn-masuk, input {
     border-radius: 0 !important;
 }
