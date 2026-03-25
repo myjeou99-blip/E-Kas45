@@ -24,7 +24,7 @@ body {
 /* 2. Atur Pembungkus Aplikasi (Halaman HP-nya) */
 .main-app {
     width: 100%;
-    max-width: 100%; 
+    max-width: 500px; 
     margin: 0 auto;   
     background-color: #ffffff;
     min-height: 100vh;
@@ -32,6 +32,7 @@ body {
     position: relative;
     padding-bottom: 80px; 
     box-sizing: border-box; /* Agar padding tidak merusak lebar */
+    border-radius: 0 imp;
 }
 
 /* 3. Masukkan Kode Kartu Kas di Sini */
@@ -52,28 +53,41 @@ body {
 
 /*ini perbaikan*/
 .mobile-container {
-    width: 90% !important;
-    max-width: 400px !important;
-    /* Mengunci tinggi agar tidak melar ke atas/bawah */
-    height: 85vh !important; 
-    max-height: 760px !important;
-    
-    /* Menempatkan di tengah layar */
-    margin: auto !important;
-    position: relative !important;
-    
-    /* Membuat sudut melengkung seperti di Login */
-    border-radius: 35px !important; 
-    overflow: hidden !important;
-    
-    /* Memberikan bayangan agar terlihat melayang */
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
-    background-color: #f4f7f6 !important;
-    display: flex !important;
-    flex-direction: column !important;
+    width: 100%;           /* Full layar di HP */
+    max-width: 450px;      /* Batasi lebar kalau dibuka di laptop agar tidak terlalu melar */
+    margin: 0 auto;        /* Biar posisi di tengah kalau di layar lebar */
+    min-height: 100vh;     /* Tinggi minimal seukuran layar HP */
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow-x: hidden;    /* Mencegah layar bisa digeser ke kanan-kiri (biar fix) */
 }
 
+/* Banner Gedung di Atas */
+.header-banner-top { 
+    width: 100%; 
+    height: 165px; 
+    overflow: hidden; 
+}
+.header-banner-top img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
 
+/* Tambahkan Kode Logo Pohon di Sini */
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;        /* Memberi ruang agar logo tidak mepet banner */
+}
+
+.logo-container img {
+    width: 120px;          /* Ukuran logo pohon Anda agar pas di HP */
+    height: auto;
+}
 
 .header-banner-top { width: 100%; height: 165px; overflow: hidden; }
 .header-banner-top img { width: 100%; height: 100%; object-fit: cover; }
