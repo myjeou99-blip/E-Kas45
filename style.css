@@ -24,7 +24,7 @@ body {
 /* 2. Atur Pembungkus Aplikasi (Halaman HP-nya) */
 .main-app {
     width: 100%;
-    max-width: 500px; 
+    max-width: 100px; 
     margin: 0 auto;   
     background-color: #ffffff;
     min-height: 100vh;
