@@ -4,104 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login - Dompet45</title>
-    <link rel="stylesheet" href="style.css?v=999">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-/* 1. RESET TOTAL AGAR SEMUA JADI KOTAK */
-    * {
-        border-radius: 0 !important;
-        -webkit-border-radius: 0 !important;
-        box-sizing: border-box;
-    }
 
-    /* 2. PENGATURAN TAMPILAN HP (Agar Full Screen & Kotak) */
-    .main-app {
-        width: 100%;
-        max-width: 500px; /* Batas lebar di PC */
-        margin: 0 auto;
-        background-color: #ffffff;
-        min-height: 100vh;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        /* Memastikan tidak ada lengkungan di pinggir layar HP */
-        border: none !important;
-        box-shadow: none !important; 
-    }
-
-    /* 3. BANNER ATAS (KOTAK TAJAM) */
-    .header-banner-top {
-        width: 100%;
-        height: auto;
-        overflow: hidden;
-    }
-    .header-banner-top img {
-        width: 100%;
-        display: block;
-    }
-
-    /* 4. FOOTER BAWAH (KOTAK TAJAM & MENYESUAIKAN HP) */
     .footer-banner-modern {
         width: 100%;
-        padding: 15px 0;
+        height: 70px;
         background: linear-gradient(135deg, #051937, #004d7a, #008793);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        /* Posisi nempel di bawah */
         position: absolute;
         bottom: 0;
         left: 0;
-    }
-
-    /* 5. TOMBOL & INPUT */
-    .btn-masuk, .input-group input {
-        width: 90%;
-        margin: 10px auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
         border-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
     }
 
-        .footer-banner-modern {
-            width: 100%;
-            height: 70px; 
-            background: linear-gradient(135deg, #051937, #004d7a, #008793);
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
-            border-radius: 0 !important;
-            
-        }
+    .footer-title {
+        color: #ffffff;
+        font-size: 14px; /*Ukuran Hurup pada Manajemen Keuangan Mobile*/
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Agar teks lebih 'timbul' */
+    }
 
-        .footer-title {
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            /*margin-bottom: 4px;*/
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Agar teks lebih 'timbul' */
-        }
+    .footer-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 10px;
+        font-weight: 500;
+        margin-top: 3px;
+        letter-spacing: 0.px;
+        text-transform: capitalize;
+    }
 
-        .footer-subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 10px;
-            font-weight: 500;
-            margin-top: 3px;
-            letter-spacing: 0.px;
-            text-transform: capitalize;
-        }
-
-        /* Update login-content agar tidak tertutup banner */
-        .login-content {
-            padding-bottom: 90px !important; 
-        }
+    .login-content {
+        padding-bottom: 150px !important; 
+    }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
         
         body { 
@@ -127,14 +72,14 @@
 
         .header-banner-top {
             width: 100%; 
-            height: 250px; 
+            height: 220px; 
             overflow: hidden;
             border-radius: 0 !important;
             
         }
         
         .header-banner-top img {
-            width: auto; 
+            width: 100%; 
             height: 100%; 
             object-fit: cover; 
         }
